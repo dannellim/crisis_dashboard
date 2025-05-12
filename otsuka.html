@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Otsuka Pharmaceutical - Greyscale Mock-up</title>
+    <style>
+        /* Global Greyscale Filter & Basic Reset */
+        html {
+            filter: grayscale(100%); /* Apply greyscale to everything */
+            -webkit-filter: grayscale(100%); /* For Safari */
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Helper Classes */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        /* Header */
+        .site-header {
+            background-color: #ffffff;
+            padding: 15px 0;
+            border-bottom: 1px solid #cccccc;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .site-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-logo img {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .main-navigation ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .main-navigation ul li {
+            margin-left: 25px;
+        }
+
+        .main-navigation ul li a {
+            text-decoration: none;
+            color: #444444;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .main-navigation ul li a:hover {
+            color: #111111;
+        }
+
+        .header-extra {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon, .lang-selector {
+            margin-left: 20px;
+            color: #555555;
+            font-size: 0.9em;
+        }
+        .search-icon a, .lang-selector a {
+            color: #555555;
+            text-decoration: none;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-color: #cccccc;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #ffffff;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .hero-section .hero-content {
+            background-color: rgba(0, 0, 0, 0.25);
+            padding: 30px;
+            border-radius: 5px;
+            z-index: 1;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5em;
+            margin: 0 0 25px 0;
+            color: #f0f0f0;
+        }
+
+        .hero-banner-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto 0;
+            border: 2px solid #555555;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 40px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .content-section:last-child {
+            border-bottom: none;
+        }
+
+        .content-section h2.section-title {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 40px;
+            color: #222222;
+        }
+
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .grid-item {
+            background-color: #ffffff;
+            border: 1px solid #d0d0d0;
+            padding: 20px;
+            border-radius: 5px;
+            flex: 1 1 calc(33.333% - 30px);
+            box-sizing: border-box; /* Crucial for correct width calculation with padding/border */
+            min-width: 280px;
+        }
+
+        .grid-item img.placeholder-image, .grid-item .placeholder-image {
+            width: 100%;
+            height: 180px;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888888;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            border-radius: 3px;
+        }
+
+        .grid-item h3 {
+            font-size: 1.4em;
+            margin: 0 0 10px 0;
+            color: #333333;
+        }
+
+        .grid-item p {
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            color: #555555;
+        }
+
+        .read-more-link {
+            display: inline-block;
+            color: #4a4a4a;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .read-more-link:hover {
+            color: #1a1a1a;
+            text-decoration: underline;
+        }
+
+        /* News Section Specifics */
+        .news-container {
+            display: flex;
+            flex-wrap: wrap; /* Allows stacking on smaller screens */
+            gap: 40px;       /* Space between the two news columns */
+        }
+
+        .news-feed {
+            flex: 1 1 calc(50% - 20px); /* Each feed aims for 50% width minus half the gap */
+            min-width: 300px;           /* Minimum width before stacking */
+            background-color: #ffffff;
+            padding: 25px;
+            border: 1px solid #d0d0d0;
+            border-radius: 5px;
+            box-sizing: border-box; /* THIS IS THE KEY CORRECTION */
+        }
+
+        .news-feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .news-feed-header h3 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #333333;
+        }
+
+        .rss-link {
+            font-size: 0.85em;
+            color: #666666;
+            text-decoration: none;
+        }
+        .rss-link:before {
+            content: "[RSS] ";
+        }
+
+        .news-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .news-list li {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eeeeee;
+        }
+        .news-list li:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .news-item-date {
+            font-size: 0.85em;
+            color: #777777;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .news-item-title {
+            font-weight: bold;
+            color: #444444;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 3px;
+        }
+        .news-item-title:hover {
+            color: #111111;
+        }
+
+        .news-item-meta {
+            font-size: 0.8em;
+            color: #888888;
+        }
+        .news-item-meta .company-tag {
+            color: #555555;
+            text-decoration: underline;
+            margin-right: 5px;
+        }
+        .new-badge {
+            display: inline-block;
+            background-color: #777777;
+            color: #ffffff;
+            padding: 2px 6px;
+            font-size: 0.7em;
+            border-radius: 3px;
+            margin-left: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .external-link-icon {
+            margin-left: 4px;
+            color: #777777;
+        }
+
+        .view-all-button-container {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .view-all-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #e9e9e9;
+            color: #333333;
+            text-decoration: none;
+            border-radius: 4px;
+            border: 1px solid #cccccc;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .view-all-button:hover {
+            background-color: #dcdcdc;
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: #333333;
+            color: #cccccc;
+            padding: 30px 0;
+            font-size: 0.85em;
+        }
+
+        .site-footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .footer-links ul li {
+            margin-right: 15px;
+            margin-bottom: 10px;
+        }
+
+        .footer-links ul li a {
+            color: #cccccc;
+            text-decoration: none;
+        }
+        .footer-links ul li a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .copyright {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) { /* Breakpoint for news feeds to stack */
+             .news-feed {
+                flex-grow: 1; /* Allow it to grow to full width */
+                flex-shrink: 1; /* Allow it to shrink if needed */
+                flex-basis: 100%; /* Make it full width, effectively stacking */
+            }
+        }
+
+        @media (max-width: 900px) { /* General breakpoint for other elements */
+            .main-navigation ul {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            .main-navigation ul li {
+                margin: 10px 0;
+            }
+            .site-header .container {
+                flex-direction: column;
+            }
+            .site-logo { margin-bottom: 15px; }
+            .header-extra { margin-top: 10px; }
+
+            .grid-item { /* For other 3-column grids */
+                flex: 1 1 calc(50% - 30px); /* Two columns */
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-section h1 { font-size: 1.8em; }
+            .grid-item { /* For other 3-column grids */
+                flex: 1 1 100%; /* Single column */
+            }
+            .site-footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-links ul {
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+            .copyright { text-align: center; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="site-logo">
+                <a href="#"><img src="logo.jpg" alt="Otsuka Pharmaceutical Logo"></a>
+            </div>
+            <nav class="main-navigation">
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Business</a></li>
+                    <li><a href="#">R&D</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                    <li><a href="#">Investors</a></li>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </nav>
+            <div class="header-extra">
+                <div class="search-icon"><a href="#">Search &#128269;</a></div>
+                <div class="lang-selector"><a href="#">EN | JP</a></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <img src="banner.jpg" alt="Learn More About Otsuka" class="hero-banner-image">
+            </div>
+        </section>
+
+        <section class="content-section" id="news-and-ir" style="background-color: #f0f0f0;">
+            <div class="container">
+                <div class="news-container">
+                    <div class="news-feed" id="ir-news">
+                        <div class="news-feed-header">
+                            <h3>IR News</h3>
+                            <a href="#" class="rss-link">RSS</a>
+                        </div>
+                        <ul class="news-list">
+                            <li>
+                                <span class="news-item-date">May 7, 2025</span>
+                                <a href="#" class="news-item-title">Notice Regarding Change in Major Shareholders</a>
+                                <span class="news-item-meta">(PDF: 257KB)</span>
+                            </li>
+                            <li>
+                                <span class="news-item-date">April 30, 2025</span>
+                                <a href="#" class="news-item-title">Consolidated Financial Results for the Three-Month Period Ended March 31, 2025 [IFRS]</a>
+                                <span class="news-item-meta">(PDF: 232KB)</span>
+                            </li>
+                            <li>
+                                <span class="news-item-date">April 28, 2025</span>
+                                <a href="#" class="news-item-title">(Correction)Partial Correction to Otsuka Pharmaceutical Factory,Inc. and ICU Medical Announce the Establishment of Joint Venture</a>
+                                <span class="news-item-meta">(PDF: 183KB)</span>
+                            </li>
+                             <li>
+                                <span class="news-item-date">April 25, 2025</span>
+                                <a href="#" class="news-item-title">Notice Concerning Completion of Payment for Disposal of Treasury Shares as Restricted Stock Compensation</a>
+                                <span class="news-item-meta">(PDF: 116KB)</span>
+                            </li>
+                        </ul>
+                        <div class="view-all-button-container">
+                            <a href="#" class="view-all-button">IR News</a>
+                        </div>
+                    </div>
+
+                    <div class="news-feed" id="group-news">
+                        <div class="news-feed-header">
+                            <h3>Otsuka Group News</h3>
+                            <a href="#" class="rss-link">RSS</a>
+                        </div>
+                        <ul class="news-list">
+                            <li>
+                                <span class="news-item-date">May 9, 2025</span>
+                                <a href="#" class="news-item-title">Pharmavite Established a New Facility in Ohio, US, Dedicated to The Manufacturing of Gummy Supplements Facilitating the Research and Development of Gummy Products</a>
+                                <span class="news-item-meta">
+                                    <a href="#" class="company-tag">Otsuka Pharmaceutical</a>
+                                    <span class="new-badge">New</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="news-item-date">May 8, 2025</span>
+                                <a href="#" class="news-item-title">Otsuka Signs Joint Research Agreement with Keio University industry-academia collaboration for infrastructure development toward the social implementation of psychedelics in Japan</a>
+                                <span class="news-item-meta">
+                                    <a href="#" class="company-tag">Otsuka Pharmaceutical</a>
+                                    <span class="new-badge">New</span>
+                                    <span class="external-link-icon">&#128279;</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="news-item-date">May 2, 2025</span>
+                                <a href="#" class="news-item-title">Otsuka Pharmaceutical Factory America, Inc. Acquires 60% Interest in Otsuka ICU Medical LLC and Subsidiaries</a>
+                                <span class="news-item-meta">
+                                    <a href="#" class="company-tag">Otsuka Pharmaceutical Factory</a>
+                                     <span class="external-link-icon">&#128279;</span>
+                                </span>
+                            </li>
+                             <li>
+                                <span class="news-item-date">April 15, 2025</span>
+                                <a href="#" class="news-item-title">Otsuka Pharmaceutical Opens First POCARI SWEAT Factory in Vietnam Supporting Health and Meeting Growing Demand</a>
+                                 <span class="news-item-meta">
+                                    <a href="#" class="company-tag">Otsuka Pharmaceutical</a>
+                                     <span class="external-link-icon">&#128279;</span>
+                                </span>
+                            </li>
+                        </ul>
+                        <div class="view-all-button-container">
+                             <a href="#" class="view-all-button">Otsuka Group News</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="our-business">
+            <div class="container">
+                <h2 class="section-title">Our Business</h2>
+                <div class="grid">
+                    <div class="grid-item">
+                        <div class="placeholder-image">Image (Pharmaceuticals)</div>
+                        <h3>Pharmaceutical Business</h3>
+                        <p>Developing innovative drugs to address unmet medical needs globally. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <a href="#" class="read-more-link">Discover More &raquo;</a>
+                    </div>
+                    <div class="grid-item">
+                        <div class="placeholder-image">Image (Nutraceuticals)</div>
+                        <h3>Nutraceutical Business</h3>
+                        <p>Providing products that contribute to daily health and wellness, based on scientific evidence. Sed do eiusmod tempor incididunt.</p>
+                        <a href="#" class="read-more-link">Explore Products &raquo;</a>
+                    </div>
+                    <div class="grid-item">
+                        <div class="placeholder-image">Image (Other Business)</div>
+                        <h3>Other Businesses</h3>
+                        <p>Expanding into diverse fields that support health and lifestyle. Ut labore et dolore magna aliqua.</p>
+                        <a href="#" class="read-more-link">Learn More &raquo;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="research-development" style="background-color: #eaeaea;">
+            <div class="container">
+                <h2 class="section-title">Research & Development</h2>
+                <div class="grid">
+                     <div class="grid-item">
+                         <div class="placeholder-image">Image (R&D Focus Area 1)</div>
+                        <h3>CNS Disorders</h3>
+                        <p>Pioneering treatments for psychiatric and neurological conditions. Lorem ipsum dolor sit amet.</p>
+                        <a href="#" class="read-more-link">Our Approach &raquo;</a>
+                    </div>
+                    <div class="grid-item">
+                        <div class="placeholder-image">Image (R&D Focus Area 2)</div>
+                        <h3>Oncology</h3>
+                        <p>Dedicated to discovering new therapies for various types of cancer. Consectetur adipiscing elit.</p>
+                        <a href="#" class="read-more-link">Pipeline &raquo;</a>
+                    </div>
+                     <div class="grid-item">
+                        <div class="placeholder-image">Image (Global R&D Network)</div>
+                        <h3>Global Network</h3>
+                        <p>Collaborating worldwide to accelerate innovation from discovery to patient. Sed do eiusmod tempor.</p>
+                        <a href="#" class="read-more-link">Our Facilities &raquo;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="sustainability">
+            <div class="container">
+                <h2 class="section-title">Sustainability</h2>
+                <div class="grid">
+                    <div class="grid-item">
+                        <div class="placeholder-image">Image (Environment)</div>
+                        <h3>Environment</h3>
+                        <p>Striving to reduce our environmental footprint and promote a sustainable society. Ut enim ad minim veniam.</p>
+                        <a href="#" class="read-more-link">Our Initiatives &raquo;</a>
+                    </div>
+                    <div class="grid-item">
+                        <div class="placeholder-image">Image (Social)</div>
+                        <h3>Social Contribution</h3>
+                        <p>Engaging in activities that contribute to the well-being of communities around the world. Quis nostrud exercitation.</p>
+                        <a href="#" class="read-more-link">Community Work &raquo;</a>
+                    </div>
+                    <div class="grid-item">
+                        <div class="placeholder-image">Image (Governance)</div>
+                        <h3>Governance</h3>
+                        <p>Maintaining robust corporate governance for ethical and transparent management. Ullamco laboris nisi.</p>
+                        <a href="#" class="read-more-link">Our Policies &raquo;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Site Map</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Accessibility</a></li>
+                </ul>
+            </div>
+            <div class="copyright">
+                &copy; Otsuka Holdings Co., Ltd. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

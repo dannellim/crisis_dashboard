@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EQUELLE Crisis Management Dashboard - Greyscale</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* Light grey background */
+            color: #333333; /* Dark grey text */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #2c2c2c; /* Dark charcoal header */
+            color: #e0e0e0; /* Light grey header text */
+            padding: 20px 0;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Slightly darker shadow */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header img {
+            max-width: 150px; /* Adjust as needed */
+            height: auto;
+            margin-bottom: 10px; /* Space between logo and text */
+            filter: grayscale(100%); /* THIS MAKES THE LOGO GREYSCALE */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 1em;
+        }
+
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 1200px;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #ffffff; /* White cards */
+            border: 1px solid #cccccc; /* Light grey border */
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            flex-basis: calc(33.333% - 40px); /* Adjust for gap */
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: #1a1a1a; /* Very dark grey, almost black for headings */
+            border-bottom: 2px solid #e0e0e0; /* Lighter grey border */
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card p, .card div {
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #4d4d4d; /* Medium-dark grey for paragraph text */
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #ffffff; /* White text on badges */
+            border: 1px solid #404040; /* Darker border for definition */
+        }
+
+        /* Greyscale status badges */
+        .status-critical { background-color: #595959; } /* Dark grey */
+        .status-warning { background-color: #8c8c8c; } /* Medium grey */
+        .status-stable { background-color: #bfbfbf; color: #2c2c2c;} /* Light grey, dark text for contrast */
+        .status-neutral { background-color: #a6a6a6; } /* Medium-light grey */
+        .status-active { background-color: #737373; } /* Medium-dark grey */
+
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #d9d9d9; /* Light grey container */
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 1px solid #b3b3b3;
+        }
+
+        .progress-bar {
+            width: 0%; /* Set by JS */
+            height: 20px;
+            background-color: #666666; /* Default medium grey progress bar */
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            border-radius: 4px; /* Slightly adjusted for inner bar */
+            font-size: 0.8em;
+            transition: width 0.5s ease-in-out, background-color 0.3s ease;
+        }
+
+        .hotline {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333333; /* Dark grey for hotline number */
+            text-align: center;
+            margin-top: 10px;
+            padding: 5px;
+            background-color: #e8e8e8; /* Very light grey highlight */
+            border-radius: 4px;
+        }
+
+        .interactive-button {
+            background-color: #5a5a5a; /* Medium-dark grey button */
+            color: white;
+            border: 1px solid #404040; /* Darker border */
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .interactive-button:hover {
+            background-color: #404040; /* Darker grey on hover */
+            border-color: #2c2c2c;
+        }
+
+        .details {
+            display: none; /* Hidden by default */
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f7f7f7; /* Very light grey for details section */
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+        }
+        .details p, .details ul li {
+            color: #333333; /* Ensure text in details is readable */
+        }
+
+        /* Chart styling (simple CSS, for actual charts use a library) */
+        .chart-container {
+            width: 100%;
+            height: 200px; /* Adjust as needed */
+            background-color: #e0e0e0; /* Light grey chart background */
+            border: 1px solid #b3b3b3; /* Medium grey border */
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .bar {
+            width: 30px;
+            /* Greyscale chart bars */
+            margin-bottom: 0; /* Align to bottom */
+            border: 1px solid #404040;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul li {
+            padding: 8px 0; /* Increased padding for readability */
+            border-bottom: 1px solid #e0e0e0; /* Light grey separator */
+        }
+        ul li:last-child {
+            border-bottom: none;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            background-color: #fdfdfd;
+            color: #333333;
+        }
+        input[type="text"]:focus {
+            border-color: #808080;
+            outline: none;
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .card {
+                flex-basis: calc(50% - 40px);
+            }
+        }
+        @media (max-width: 600px) {
+            .card {
+                flex-basis: calc(100% - 40px);
+            }
+            header h1 { font-size: 1.5em; }
+            .hotline { font-size: 1.2em; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo.jpg" alt="Otsuka Pharmaceutical Logo">
+        <h1>EQUELLE Product Crisis Management Dashboard</h1>
+        <p>Otsuka Pharmaceuticals - Confidential</p>
+        <p>Last Updated: <span id="lastUpdated"></span></p>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="card">
+            <h2>Overall Crisis Status</h2>
+            <p>Current Alert Level: <span id="crisisLevel" class="status-badge">Loading...</span></p>
+            <p>Summary: <span id="crisisSummary">Awaiting initial assessment.</span></p>
+            <button class="interactive-button" onclick="toggleDetails('crisisDetails')">View Details</button>
+            <div class="details" id="crisisDetails">
+                <p><strong>Detailed Assessment:</strong> Significant quality concerns identified in specific batches of EQUELLE leading to adverse events, including one confirmed fatality. Impact assessment critical.</p>
+                <p><strong>Actions Taken:</strong> Immediate global halt on distribution and sale of EQUELLE. Full product recall initiated. Internal and external investigations launched. Regulatory bodies informed of severity.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Investigation Status</h2>
+            <p>Lead Investigator: Independent Review Panel & Dr. A. Tanaka (Internal QA Lead)</p>
+            <p>Status: <span id="investigationStatus" class="status-badge"></span></p>
+            <p>Expected Completion: <span id="investigationEta">To be determined post-initial phase</span></p>
+            <p>Progress: <span id="investigationProgress">15%</span></p>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="investigationProgressBar">15%</div>
+            </div>
+            <button class="interactive-button" onclick="toggleDetails('investigationDetails')">Show Milestones</button>
+            <div class="details" id="investigationDetails">
+                <ul>
+                    <li><strong>Milestone 1:</strong> Secure all batch samples & data - <span class="status-badge status-active">In Progress</span></li>
+                    <li><strong>Milestone 2:</strong> Preliminary forensic analysis - <span class="status-badge status-neutral">Pending</span></li>
+                    <li><strong>Milestone 3:</strong> Identify point(s) of failure - <span class="status-badge status-neutral">Pending</span></li>
+                    <li><strong>Milestone 4:</strong> Comprehensive Root Cause Analysis - <span class="status-badge status-neutral">Pending</span></li>
+                    <li><strong>Milestone 5:</strong> Report to regulatory bodies & public - <span class="status-badge status-neutral">Pending</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Product Recall Percentage</h2>
+            <p>Affected Batches: ALL BATCHES of EQUELLE</p>
+            <p>Total Units in Market: <span id="totalAffectedUnits">1,250,000</span></p>
+            <p>Units Recalled: <span id="unitsRecalled">125,000</span></p>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="recallProgressBar" style="background-color: #8c8c8c;">10%</div>
+            </div>
+            <button class="interactive-button" onclick="updateRecallProgress()">Refresh Recall Data</button>
+        </div>
+
+        <div class="card">
+            <h2>Crisis Hotline & Support</h2>
+            <p>Status: <span id="hotlineStatus" class="status-badge"></span></p>
+            <p>Dedicated Phone Line (24/7):</p>
+            <div class="hotline" id="hotlineNumber">1-800-EQUELLE-HELP (378-3553-4357)</div>
+            <p>Grief Counseling & Medical Support Offered</p>
+            <p>Average Wait Time: <span id="hotlineWaitTime">8 min (High Volume)</span></p>
+            <p>Total Calls Received: <span id="hotlineCallsToday">1250</span></p>
+        </div>
+
+        <div class="card">
+            <h2>Geographic Impact</h2>
+            <p>Global Distribution Implicated. Prioritized Recall Regions:</p>
+            <div class="chart-container" id="geoChart">
+                <div class="bar" style="height: 70%; background-color: #595959;" title="North America: 70%"></div>
+                <div class="bar" style="height: 50%; background-color: #737373;" title="Europe: 50%"></div>
+                <div class="bar" style="height: 40%; background-color: #8c8c8c;" title="Asia-Pacific: 40%"></div>
+                <div class="bar" style="height: 20%; background-color: #a6a6a6;" title="Rest of World: 20%"></div>
+            </div>
+            <p style="font-size:0.8em; text-align:center; margin-top:5px;">(Mock Data: Units in distribution)</p>
+            <button class="interactive-button" onclick="toggleDetails('geoDetails')">View Regional Updates</button>
+            <div class="details" id="geoDetails">
+                <ul>
+                    <li>North America: Recall efforts active. Health advisories issued.</li>
+                    <li>Europe: Coordination with EMA. Distribution channels frozen.</li>
+                    <li>Asia-Pacific: PMDA and other local agencies engaged. Public warnings.</li>
+                    <li>Rest of World: Distributors contacted for immediate stock withdrawal.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Public & Stakeholder Sentiment</h2>
+            <p>Overall Sentiment: <span id="sentimentStatus" class="status-badge"></span></p>
+            <div class="chart-container" id="sentimentChart">
+                 <div class="bar" style="height: 5%; background-color: #bfbfbf;" title="Positive: 5%"></div>
+                 <div class="bar" style="height: 25%; background-color: #a6a6a6;" title="Neutral/Concerned: 25%"></div>
+                 <div class="bar" style="height: 70%; background-color: #595959;" title="Negative/Distress: 70%"></div>
+            </div>
+            <p style="font-size:0.8em; text-align:center; margin-top:5px;">(Source: Media, Social Media, Hotline Feedback - Mock Data)</p>
+            <p>Key Themes: Grief, anger, demand for accountability, health fears, information seeking.</p>
+        </div>
+
+        <div class="card">
+            <h2>Media Monitoring</h2>
+            <p>Coverage Level: <span id="mediaLevel" class="status-badge"></span></p>
+            <p>Key Headlines:</p>
+            <ul>
+                <li>Global News: "Otsuka Halts EQUELLE Sales After Reported Death, Issues Global Recall"</li>
+                <li>Pharma Crisis Journal: "Fatality Linked to EQUELLE Supplement Triggers Urgent Investigation"</li>
+                <li>Health Watchdog: "Consumers Warned: Do Not Use EQUELLE - Otsuka Under Scrutiny"</li>
+                <li>Social Media: #EQUELLEtragedy, #OtsukaCrisis trending globally</li>
+            </ul>
+            <button class="interactive-button" onclick="window.open('https://news.google.com/search?q=Otsuka+Pharmaceuticals+EQUELLE+crisis', '_blank')">Search Live News (Example)</button>
+        </div>
+
+        <div class="card">
+            <h2>Regulatory & Legal</h2>
+            <p>FDA Communication: <span id="fdaNotified" class="status-badge"></span> - Ongoing Critical Engagement</p>
+            <p>EMA Communication: <span id="emaNotified" class="status-badge"></span> - Daily Briefings</p>
+            <p>PMDA (Japan) Comm.: <span id="pmdaNotified" class="status-badge"></span> - Full Cooperation</p>
+            <p>Legal Counsel: External crisis litigation team engaged.</p>
+            <p>Next Major Update: <span id="regulatoryUpdateDue">Press Conference 2 PM (JST)</span></p>
+        </div>
+
+         <div class="card">
+            <h2>Key Actions & Timeline (Updated for Severity)</h2>
+            <ul id="timeline">
+                <li><strong>Day 0 (YYYY-MM-DD):</strong> Critical adverse event reported, including fatality linked to EQUELLE. Immediate internal alert.</li>
+                <li><strong>Day 1 (YYYY-MM-DD+1):</strong> Crisis Level Red declared. Global sales/distribution halt. CEO notified. Initial contact with key regulatory bodies (FDA, EMA, PMDA) about fatality. Recall planning initiated.</li>
+                <li><strong>Day 2 (YYYY-MM-DD+2):</strong> Public announcement of product recall and fatality. Hotline for public and grief counseling established. External investigators onboarded. Formal investigation launched. Stock exchange notification.</li>
+                </ul>
+            <input type="text" id="newTimelineItem" placeholder="Log new critical action..." style="width: calc(100% - 70px); padding: 8px; margin-right: 5px;">
+            <button class="interactive-button" onclick="addTimelineItem()" style="width: 60px;">Log</button>
+        </div>
+
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+        }
+
+        function setStatusBadge(elementId, statusText, severity) {
+            const badge = document.getElementById(elementId);
+            if (!badge) return;
+            badge.textContent = statusText;
+            switch (severity) {
+                case 'critical': badge.className = 'status-badge status-critical'; break;
+                case 'warning': badge.className = 'status-badge status-warning'; break;
+                case 'stable': badge.className = 'status-badge status-stable'; break;
+                case 'active': badge.className = 'status-badge status-active'; break;
+                default: badge.className = 'status-badge status-neutral'; break;
+            }
+        }
+
+
+        function setInitialCrisisStatus() {
+            const crisisLevelText = "CRITICAL";
+            const crisisSummaryText = "Product recall following a confirmed fatality linked to EQUELLE. Active investigation and public communication ongoing.";
+            setStatusBadge('crisisLevel', crisisLevelText, 'critical');
+            document.getElementById('crisisSummary').textContent = crisisSummaryText;
+
+            // Adjust details to reflect severity
+            const crisisDetails = document.getElementById('crisisDetails');
+            crisisDetails.innerHTML = `
+                <p><strong>Detailed Assessment:</strong> A confirmed consumer fatality and several severe adverse events have been directly linked to specific batches of EQUELLE. The root cause is under urgent investigation, suspected to be a contaminant or formulation error.</p>
+                <p><strong>Immediate Actions:</strong>
+                    <ul>
+                        <li>Global recall of all EQUELLE products.</li>
+                        <li>Suspension of all manufacturing and distribution.</li>
+                        <li>24/7 crisis hotline established with grief counseling services.</li>
+                        <li>Direct outreach to families affected.</li>
+                        <li>Full cooperation with all global regulatory health authorities.</li>
+                    </ul>
+                </p>`;
+        }
+
+        function setInvestigationProgress() {
+            const progress = 15; // Mock percentage, likely low in early critical phase
+            const progressBar = document.getElementById('investigationProgressBar');
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = progress + '%';
+            progressBar.style.backgroundColor = '#8c8c8c'; // Medium grey for in-progress
+
+            document.getElementById('investigationProgress').textContent = progress + '%';
+            setStatusBadge('investigationStatus', 'Critical Phase - Ongoing', 'critical');
+            document.getElementById('investigationEta').textContent = "Daily Updates Provided";
+        }
+
+        function setRecallProgress() {
+            const totalAffected = 1250000;
+            let unitsRecalled = document.getElementById('unitsRecalled').textContent.replace(/,/g, '');
+            unitsRecalled = unitsRecalled ? parseInt(unitsRecalled) : 125000; // Initial mock
+
+            document.getElementById('unitsRecalled').textContent = unitsRecalled.toLocaleString();
+            document.getElementById('totalAffectedUnits').textContent = totalAffected.toLocaleString();
+
+            const recallPercentage = Math.round((unitsRecalled / totalAffected) * 100);
+            const progressBar = document.getElementById('recallProgressBar');
+            progressBar.style.width = recallPercentage + '%';
+            progressBar.textContent = recallPercentage + '%';
+
+            // Greyscale progress bar based on percentage (darker for lower recall)
+            if(recallPercentage < 30) progressBar.style.backgroundColor = "#595959"; // Dark grey
+            else if (recallPercentage < 70) progressBar.style.backgroundColor = "#737373"; // Medium-dark grey
+            else progressBar.style.backgroundColor = "#8c8c8c"; // Medium grey
+        }
+
+        function updateRecallProgress() {
+            let currentRecalled = parseInt(document.getElementById('unitsRecalled').textContent.replace(/,/g, ''), 10);
+            const totalAffected = parseInt(document.getElementById('totalAffectedUnits').textContent.replace(/,/g, ''), 10);
+
+            let newUnitsFound = Math.floor(Math.random() * (totalAffected * 0.02)); // Slower, more deliberate recall update
+            currentRecalled += newUnitsFound;
+            if (currentRecalled > totalAffected) {
+                currentRecalled = totalAffected;
+            }
+            document.getElementById('unitsRecalled').textContent = currentRecalled.toLocaleString();
+            setRecallProgress(); // Recalculate and update progress bar style
+
+            let calls = parseInt(document.getElementById('hotlineCallsToday').textContent);
+            calls += Math.floor(Math.random() * 50 + 20); // Higher call increase
+            document.getElementById('hotlineCallsToday').textContent = calls;
+            document.getElementById('hotlineWaitTime').textContent = Math.floor(Math.random() * 5 + 7) + " min (High Volume)";
+        }
+
+
+        function toggleDetails(elementId) {
+            const detailsElement = document.getElementById(elementId);
+            if (detailsElement.style.display === 'none' || detailsElement.style.display === '') {
+                detailsElement.style.display = 'block';
+            } else {
+                detailsElement.style.display = 'none';
+            }
+        }
+
+        function addTimelineItem() {
+            const newItemText = document.getElementById('newTimelineItem').value;
+            if (newItemText.trim() === "") {
+                alert("Please enter an action for the timeline.");
+                return;
+            }
+            const timelineList = document.getElementById('timeline');
+            const newListItem = document.createElement('li');
+            const crisisDay = timelineList.children.length; // Simple day counter
+            const today = new Date();
+            // Calculate the date for the timeline item, assuming Day 0 was 'timelineList.children.length - 1' days ago
+            const eventDate = new Date(); // Start with today
+            eventDate.setDate(today.getDate() - (timelineList.children.length - crisisDay) );
+
+
+            newListItem.innerHTML = `<strong>Day ${crisisDay} (${eventDate.toISOString().slice(0,10)}):</strong> ${newItemText}`;
+            timelineList.appendChild(newListItem);
+            document.getElementById('newTimelineItem').value = ""; // Clear input
+        }
+
+        // Initial setup
+        window.onload = function() {
+            updateTime();
+            setInterval(updateTime, 60000);
+
+            setInitialCrisisStatus();
+            setInvestigationProgress();
+            setRecallProgress();
+
+            // Hotline status updated for severity
+            setStatusBadge('hotlineStatus', 'CRITICAL - HIGH VOLUME', 'critical');
+            document.getElementById('hotlineNumber').textContent = "1-800-EQUELLE-AID (378-3553-243)"; // Updated mock
+            document.getElementById('hotlineWaitTime').textContent = Math.floor(Math.random() * 8 + 5) + " min (High Volume)";
+            document.getElementById('hotlineCallsToday').textContent = Math.floor(Math.random() * 500 + 800); // Higher initial calls
+
+            // Sentiment Status
+            setStatusBadge('sentimentStatus', 'EXTREME DISTRESS', 'critical');
+            // Media Level
+            setStatusBadge('mediaLevel', 'CRITICAL - GLOBAL COVERAGE', 'critical');
+
+            // Regulatory Status Badges
+            setStatusBadge('fdaNotified', 'Critical', 'critical');
+            setStatusBadge('emaNotified', 'Critical', 'critical');
+            setStatusBadge('pmdaNotified', 'Critical', 'critical');
+            document.getElementById('regulatoryUpdateDue').textContent = "Next Press Briefing: " + new Date(Date.now() + 4 * 3600 * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Example: in 4 hours
+
+
+            // Update timeline dates to be more realistic for an ongoing crisis
+            const timelineList = document.getElementById('timeline');
+            const baseDateForTimeline = new Date(); // Today
+            // Day 0 should be (number of initial timeline items - 1) days ago
+            baseDateForTimeline.setDate(baseDateForTimeline.getDate() - (timelineList.children.length - 1));
+
+            for (let i = 0; i < timelineList.children.length; i++) {
+                let item = timelineList.children[i];
+                let currentText = item.innerHTML;
+                let dayMatch = currentText.match(/<strong>Day (\d+)/);
+                if (dayMatch) {
+                    let dayNumber = parseInt(dayMatch[1]); // This is 0, 1, 2...
+                    let itemDate = new Date(baseDateForTimeline);
+                    itemDate.setDate(baseDateForTimeline.getDate() + dayNumber); // Add dayNumber to Day 0's date
+                    item.innerHTML = currentText.replace(/\(YYYY-MM-DD\S*\)/, `(${itemDate.toISOString().slice(0,10)})`);
+                }
+            }
+        };
+    </script>
+
+</body>
+</html>
