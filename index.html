@@ -229,14 +229,14 @@
 
     <header>
         <img src="logo.jpg" alt="Otsuka Pharmaceutical Logo">
-        <h1>EQUELLE Product Crisis Management Dashboard</h1>
-        <p>Otsuka Pharmaceuticals - Confidential</p>
+        <h1>EQUELLE Dashboard</h1>
+        <p>Otsuka Pharmaceuticals </p>
         <p>Last Updated: <span id="lastUpdated"></span></p>
     </header>
 
     <div class="dashboard-container">
         <div class="card">
-            <h2>Overall Crisis Status</h2>
+            <h2>Overall Status</h2>
             <p>Current Alert Level: <span id="crisisLevel" class="status-badge">Loading...</span></p>
             <p>Summary: <span id="crisisSummary">Awaiting initial assessment.</span></p>
             <button class="interactive-button" onclick="toggleDetails('crisisDetails')">View Details</button>
@@ -310,40 +310,8 @@
         </div>
 
         <div class="card">
-            <h2>Public & Stakeholder Sentiment</h2>
-            <p>Overall Sentiment: <span id="sentimentStatus" class="status-badge"></span></p>
-            <div class="chart-container" id="sentimentChart">
-                 <div class="bar" style="height: 5%; background-color: #bfbfbf;" title="Positive: 5%"></div>
-                 <div class="bar" style="height: 25%; background-color: #a6a6a6;" title="Neutral/Concerned: 25%"></div>
-                 <div class="bar" style="height: 70%; background-color: #595959;" title="Negative/Distress: 70%"></div>
-            </div>
-            <p style="font-size:0.8em; text-align:center; margin-top:5px;">(Source: Media, Social Media, Hotline Feedback - Mock Data)</p>
-            <p>Key Themes: Grief, anger, demand for accountability, health fears, information seeking.</p>
-        </div>
-
-        <div class="card">
-            <h2>Media Monitoring</h2>
-            <p>Coverage Level: <span id="mediaLevel" class="status-badge"></span></p>
-            <p>Key Headlines:</p>
-            <ul>
-                <li>Global News: "Otsuka Halts EQUELLE Sales After Reported Death, Issues Global Recall"</li>
-                <li>Pharma Crisis Journal: "Fatality Linked to EQUELLE Supplement Triggers Urgent Investigation"</li>
-                <li>Health Watchdog: "Consumers Warned: Do Not Use EQUELLE - Otsuka Under Scrutiny"</li>
-                <li>Social Media: #EQUELLEtragedy, #OtsukaCrisis trending globally</li>
-            </ul>
-            <button class="interactive-button" onclick="window.open('https://news.google.com/search?q=Otsuka+Pharmaceuticals+EQUELLE+crisis', '_blank')">Search Live News (Example)</button>
-        </div>
-
-        <div class="card">
-            <h2>Regulatory & Legal</h2>
-            <p>FDA Communication: <span id="fdaNotified" class="status-badge"></span> - Ongoing Critical Engagement</p>
-            <p>EMA Communication: <span id="emaNotified" class="status-badge"></span> - Daily Briefings</p>
-            <p>PMDA (Japan) Comm.: <span id="pmdaNotified" class="status-badge"></span> - Full Cooperation</p>
-            <p>Legal Counsel: External crisis litigation team engaged.</p>
-            <p>Next Major Update: <span id="regulatoryUpdateDue">Press Conference 2 PM (JST)</span></p>
-        </div>
-
-         <div class="card">
+            <h2></h2>
+         
             <h2>Key Actions & Timeline (Updated for Severity)</h2>
             <ul id="timeline">
                 <li><strong>Day 0 (YYYY-MM-DD):</strong> Critical adverse event reported, including fatality linked to EQUELLE. Immediate internal alert.</li>
